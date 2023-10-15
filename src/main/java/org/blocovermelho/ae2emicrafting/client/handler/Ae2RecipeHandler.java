@@ -52,6 +52,31 @@ public class Ae2RecipeHandler<T extends CraftingTermMenu> implements StandardRec
                     return new Slot(new SimpleInventory(stack), 0, 0, 0);
                 }).toList());
 
+        // Pattern Awareness Bucket List:
+
+        // Prerequisites
+
+        // Knowing how the AE2 Protocol works for requesting craftings using the client
+        // requisition menu. This is a hard-requirement for adding pattern awareness,
+        // since simply sending `FillCraftingGridFromRecipePacket(craftMissing:true)`
+        // provides no user feedback and spams the console with error messages.
+
+
+        // Idea 1: Calculate possibly craftable patterns' result and use provide them as
+        // Slot.
+
+        // We need to figure out a way to tell AE2 to give us how much of any given pattern
+        // can be crafted based on the items inside the system.
+        // Something similar to
+        // resolvePatterns :: ClientRepo -> [(AEKey, Long)]
+
+        // Knowing how many items can be made, that information can be passed down as a valid
+        // source, with its slots being handled in a different way.
+        // A custom nmi.Inventory implementation in the likes of an VirtualAEInventory
+        // could also be used instead of SimpleInventory, since those items don't exist and
+        // require custom handling on the AE2 side of things.
+
+
         sources.addAll(handler.getSlots(SlotSemantics.PLAYER_INVENTORY));
         sources.addAll(handler.getSlots(SlotSemantics.PLAYER_HOTBAR));
         sources.addAll(handler.getSlots(SlotSemantics.CRAFTING_GRID));
